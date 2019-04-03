@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function
-
+# importing TensorFlow our main library for creating this Neural Network
+# adding keras for our model layers
 import tensorflow as tf
 from tensorflow import keras
 
@@ -17,8 +18,8 @@ fashion_mnist = keras.datasets.fashion_mnist
 # here we train our images and labels along with testing them by using an array
 # loading up the fashion mnist data set
 # the training part allows the data that the model uses to learn from
-# the testing part is where eour model is in the process of being tested in the test image and label arrays
-(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+# the testing part is where our model is in the process of being tested in the test image and label arrays
+(trainImages, trainLabels), (testImages, testLabels) = fashion_mnist.load_data()
 # The images are 28 by 28 numpy arrays with pixels that range from a 0 to 255
 # the labels are an array of integers that range from a 0 to 10
 # I will be showing what label belongs to what class
@@ -35,15 +36,14 @@ fashion_mnist = keras.datasets.fashion_mnist
 # 8 ----> Bag
 # 9 ----> Boots
 
-className = ['T-shirt', 'Trousers', 'Trunks', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker',
-             'Bag', 'Boots']
+className = ['T-shirt', 'Trousers', 'Trunks', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Boots']
 # Before we train our model, we explore the dataset's format
-# TensorFlow's datasets include 60,000 images reprsented as 28 x 28 pixels
-train_images.shape
-len(train_labels)
-train_labels
-test_images.shape
-len(test_labels)
+# TensorFlow's datasets include 60,000 images represented as 28 x 28 pixels
+trainImages.shape
+len(trainLabels)
+trainLabels
+testImages.shape
+len(testLabels)
 
 # Before training the network our data must be preprocessed
 # The image of the boot in the training set has a pixel value in the range of 0 - 255
@@ -51,14 +51,14 @@ len(test_labels)
 # feeding the neural network model the data
 # values / 255
 plt.figure()
-plt.imshow(train_images[0])
+plt.imshow(trainImages[0])
 plt.colorbar()
 plt.grid(False)
 plt.show()
 
 # values / 255
-train_images = train_images / 255.0
-test_images = test_images / 255.0
+trainImages = trainImages / 255.0
+testImages = testImages / 255.0
 
 # Here the first 25 images from the training set and displaying the class name under images
 # verifies data in correct format
@@ -69,8 +69,8 @@ for i in range(25):
     plt.xticks([])
     plt.yticks([])
     plt.grid(False)
-    plt.imshow(train_images[i], cmap=plt.cm.binary)
-    plt.xlabel(className[train_labels[i]])
+    plt.imshow(trainImages[i], cmap=plt.cm.binary)
+    plt.xlabel(className[trainLabels[i]])
 plt.show()
 
 # The model is being constructed here where the Neural Network requires the layers of the model
@@ -101,20 +101,20 @@ model.compile(optimizer='adam',
 # Training our model
 # There are few steps that are followed for training the data to our model
 # We feed the training data to our model that we have created
-# The train_images and train_labels are the training arrays
+# The trainImages and trainLabels are the training arrays
 # The model then learns to associate with the images and it's labels
-# we ask the model to make predictions about a test set (test_images, test_labels)
+# we ask the model to make predictions about a test set (testImages, testLabels)
 # we call out the model.fit method to start the training
-model.fit(train_images, train_labels, epochs=5)
+model.fit(trainImages, trainLabels, epochs=5)
 
 # Accuracy evaluation
 # We compare how the model performs on the test dataset
-test_loss, test_acc = model.evaluate(test_images, test_labels)
-print('Test accuracy: ', test_acc)
+testLoss, testAccuracy = model.evaluate(testImages, testLabels)
+print('Test accuracy: ', testAccuracy)
 
 # Making predictions with the trained model
 # we can use it to make predictions about the images
-predictions = model.predict(test_images)
+predictions = model.predict(testImages)
 # Here the model has predicted the label
 predictions[0]
 # A prediction is an array of 10 numbers that describe as the "confidence" of the model
@@ -122,7 +122,7 @@ predictions[0]
 np.argmax(predictions[0])
 # Checking if the test label is correct or not
 # our prediction would be an ankle boot
-test_labels[0]
+testLabels[0]
 
 
 # now we can graph this to look at the full set of 10 channels
@@ -134,13 +134,13 @@ def plot_image(i, predictions_array, true_label, image):
 
     plt.imshow(image, cmap=plt.cm.binary)
 
-    predicted_label = np.argmax(predictions_array)
-    if predicted_label == true_label:
+    labelPredicted = np.argmax(predictions_array)
+    if labelPredicted == true_label:
         color = 'blue'
     else:
         color = 'red'
 
-    plt.xlabel("{} {:2.0f}% ({})".format(className[predicted_label],
+    plt.xlabel("{} {:2.0f}% ({})".format(className[labelPredicted],
                                          100 * np.max(predictions_array),
                                          className[true_label]), color=color)
 
@@ -161,17 +161,17 @@ def plot_value_array(i, predicitons_array, true_label):
 i = 0
 plt.figure(figsize=(6, 3))
 plt.subplot(1, 2, 1)
-plot_image(i, predictions, test_labels, test_images)
+plot_image(i, predictions, testLabels, testImages)
 plt.subplot(1, 2, 2)
-plot_value_array(i, predictions, test_labels)
+plot_value_array(i, predictions, testLabels)
 plt.show()
 
 i = 12
 plt.figure(figsize=(6,3))
 plt.subplot(1,2,1)
-plot_image(i, predictions, test_labels, test_images)
+plot_image(i, predictions, testLabels, testImages)
 plt.subplot(1,2,2)
-plot_value_array(i, predictions, test_labels)
+plot_value_array(i, predictions, testLabels)
 plt.show()
 
 # plotting the first X test images, their predicted and true label
@@ -183,14 +183,14 @@ num_images = num_rows*num_cols
 plt.figure(figsize=(2*2*num_cols, 2*num_rows))
 for i in range(num_images):
     plt.subplot(num_rows, 2*num_cols, 2*i+1)
-    plot_image(i,predictions, test_labels, test_images)
+    plot_image(i, predictions, testLabels, testImages)
     plt.subplot(num_rows, 2*num_cols, 2*i+2)
-    plot_value_array(i, predictions, test_labels)
+    plot_value_array(i, predictions, testLabels)
 plt.show()
 
 # we finally use the trained model to make the predictions for a single image
 # grabbing an image from the test data set
-img = test_images[0]
+img = testImages[0]
 print(img.shape)
 # the tf.keras models are optimized to make predictions on a batch or either a collection
 # Adding image to a batch wherer it's only a member
@@ -199,7 +199,7 @@ print(img.shape)
 # predicting images
 predictions_single = model.predict(img)
 print(predictions_single)
-plot_value_array(0, predictions_single, test_labels)
+plot_value_array(0, predictions_single, testLabels)
 _ = plt.xticks(range(10), className, rotation=45)
 
 print("=" * 100)
@@ -217,7 +217,7 @@ print("The MNIST data set stands for Modified National Institute of Standards an
 print("Now we are familiar with what data set we use. Now let's get to the part of creating our Neural Network.")
 print("Fun Fact: MNIST data set is also known as the Hello World of Machine Learning programs for computer vision,")
 print("Now, We create our neural network by creating arrays used for training our images and labels.")
-print("They are labeled as (train_images, train_labels), (test_images, test_labels)")
+print("They are labeled as (trainImages, trainLabels), (testImages, testLabels)")
 print("The images are a 28 by 28 array with pixels that range from 0 to 255, The labels are ranged from 0 to 10.")
 print("I will be showing you what label belongs to what class below!")
 print("=" * 100)
@@ -254,9 +254,9 @@ print("The last layer is a 10 node softmax layer that returns an array of 10 pro
 print("Each node includes a score, it indicates the probability that the current image belongs to one of the 10 classes")
 print("Now that we have our layers, Our next step is to compile our model.")
 print("This step includes having to feed our model the training data.")
-print("Those are the train_images and train_labels arrays.")
+print("Those are the trainImages and trainLabels arrays.")
 print("Our model then learns how to associate with the images and it's labels.")
-print("We ask our model to make predictions about a test set which are the following arrays (test_images, test_labels)")
+print("We ask our model to make predictions about a test set which are the following arrays (testImages, testLabels)")
 print("We then call our the model.fit method to start the training process.")
 print("Next step involves an accuracy evaluation where we compare how the model performs on the test dataset.")
 print("We call out our predict method for making predictions with our trained model.")
@@ -272,4 +272,3 @@ print("The incorrect predictions will be in red.")
 print("We finally have to use the trained model to make predictions for just a single image by grabbing an image.")
 print("The keras models are optimized to make predictions on a batch or either a collection.")
 print("We add the image to a batch where it's only considered as a member.")
-
