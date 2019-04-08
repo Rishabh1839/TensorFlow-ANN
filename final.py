@@ -153,12 +153,26 @@ def plot_value_array(i, predicitons_array, true_label):
     thisplot = plt.bar(range(10), predicitons_array, color="#777777")
     plt.ylim([0, 1])
     predicted_label = np.argmax(predicitons_array)
-
+    # red means that it's incorrect
     thisplot[predicted_label].set_color('red')
+    # cyan means that it's correct
     thisplot[true_label].set_color('cyan')
 
 
-i = 0
+# here let's look at the 3rd image where image = 3 from the set of images
+i = 12
+# setting figure size
+plt.figure(figsize=(6, 3))
+plt.subplot(1, 2, 1)
+# plotting image, it's predictions along with test labels and test images
+plot_image(i, predictions, testLabels, testImages)
+plt.subplot(1, 2, 2)
+# plots out our predictions and testLabels
+plot_value_array(i, predictions, testLabels)
+plt.show()
+
+# here let's look at the 3rd image where image = 3 from the set of images
+i = 3
 plt.figure(figsize=(6, 3))
 plt.subplot(1, 2, 1)
 plot_image(i, predictions, testLabels, testImages)
@@ -166,25 +180,37 @@ plt.subplot(1, 2, 2)
 plot_value_array(i, predictions, testLabels)
 plt.show()
 
-i = 12
-plt.figure(figsize=(6,3))
-plt.subplot(1,2,1)
+# here let's look at the 8th image where image = 8 from the set of images
+i = 8
+plt.figure(figsize=(6, 3))
+plt.subplot(1, 2, 1)
 plot_image(i, predictions, testLabels, testImages)
-plt.subplot(1,2,2)
+plt.subplot(1, 2, 2)
 plot_value_array(i, predictions, testLabels)
 plt.show()
+
+# here let's look at the 10th image where image = 10 from the set of images
+i = 10
+plt.figure(figsize=(6, 3))
+plt.subplot(1, 2, 1)
+plot_image(i, predictions, testLabels, testImages)
+plt.subplot(1, 2, 2)
+plot_value_array(i, predictions, testLabels)
+plt.show()
+
+# here let's look at the 3rd image where image = 3 from the set of images
 
 # plotting the first X test images, their predicted and true label
 # The color correct predictions are in blue
 # The incorrect predictions are in red
 num_rows = 5
 num_cols = 3
-num_images = num_rows*num_cols
-plt.figure(figsize=(2*2*num_cols, 2*num_rows))
+num_images = num_rows * num_cols
+plt.figure(figsize=(2 * 2 * num_cols, 2 * num_rows))
 for i in range(num_images):
-    plt.subplot(num_rows, 2*num_cols, 2*i+1)
+    plt.subplot(num_rows, 2 * num_cols, 2 * i + 1)
     plot_image(i, predictions, testLabels, testImages)
-    plt.subplot(num_rows, 2*num_cols, 2*i+2)
+    plt.subplot(num_rows, 2 * num_cols, 2 * i + 2)
     plot_value_array(i, predictions, testLabels)
 plt.show()
 
@@ -194,7 +220,7 @@ img = testImages[0]
 print(img.shape)
 # the tf.keras models are optimized to make predictions on a batch or either a collection
 # Adding image to a batch wherer it's only a member
-img = (np.expand_dims(img,0))
+img = (np.expand_dims(img, 0))
 print(img.shape)
 # predicting images
 predictions_single = model.predict(img)
