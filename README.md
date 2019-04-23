@@ -61,3 +61,19 @@ We finally have to use the trained model to make predictions for just a single i
 The keras models are optimized to make predictions on a batch or either a collection. We add the image to a batch where it's only considered as a member.
 
 
+User Installation Guide
+---------------------------------------------------
+Install these following libraries and make sure that installation requirements are met.
+
+Dependencies:
+pip install tensorflow (https://www.tensorflow.org/install/pip)
+pip install numpy (https://www.numpy.org/)
+pip install matplotlib (https://matplotlib.org/users/installing.html)
+
+Platform:
+PyCharm - https://www.jetbrains.com/pycharm/download/#section=windows
+
+
+For better usage, consider using PyCharm platform. Make sure to install these following libraries in order to run the program,
+without the dependencies, the program is of no use.
+
